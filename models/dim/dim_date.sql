@@ -1,3 +1,8 @@
+{{
+  config(
+    pre_hook = "delete from {{this}}"
+    )
+}}
 
 with dates as (
 SELECT

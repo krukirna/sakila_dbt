@@ -1,6 +1,7 @@
 {{
 	  config(
 		unique_key = 'customer_id',
+		pre_hook = "delete from {{this}}",
 		post_hook = "update {{source('stg', 'z_refresh_from')}} set to_refresh = 0 where table_name = '{{ this }}'"
 		)
 }}
