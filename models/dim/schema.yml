@@ -1,0 +1,22 @@
+
+version: 2
+
+models:
+  - name: dim_customer
+    description: "dim_customer"
+    columns: 
+      - name: address.id
+        description: "the primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "the primary key"
+        data_types: integer    
+        data_tests:
+          - not_null 
+          - unique
+      - name: city_name
+        data_type: character varying
+        tests:
+        - not_null
