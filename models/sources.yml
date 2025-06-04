@@ -8,6 +8,7 @@ sources:
             indentifier: dim_customer
           - name: address
           - name: city
+          - name: z_refresh_from
           - name: country
           - name: film
           - name: film_actor
