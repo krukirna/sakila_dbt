@@ -26,8 +26,13 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
-on-run-start: create table if not exists sakila_dwh.log_table as select '{{ invocation_id}}' as id, now() as start_at, null::timestamp as end_at; 
+on-run-start: 
+  - create table if not exists sakila_dwh.log_table (id varchar(50), start_at timestamptz, end_at timestamp);
+  - insert into sakila_dwh.log_table (id, start_at) values ('{{invocation_id}}', now());
 
+on-run-end: 
+  - update sakila_dwh.log_table set end_at = now() where id = '{{invocation_id}}';  
+  
 # In this example config, we tell dbt to build all models in the example/
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.

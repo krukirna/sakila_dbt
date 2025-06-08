@@ -1,7 +1,10 @@
 {{
 	  config(
 		unique_key = 'customer_id',
-		post_hook = "update {{source('stg', 'z_refresh_from')}} set to_refresh = 0 where table_name = '{{ this }}'"
+		post_hook = "update {{source('stg', 'z_refresh_from')}} set to_refresh = 0 where table_name = '{{ this }}'",
+		indexes=[
+			{'columns': ['create_date']}
+			]
 		)
 }}
 
