@@ -27,9 +27,8 @@ left join {{ source('stg','city') }} as ci on ci.city_id = a.city_id
 
 
 {% if is_incremental() %}
---	where c.last_update >= coalesce((select max(last_update) from {{ this }}), '1900-01-01')
 	where c.last_update >= coalesce(
 									(select from_date from refresh_date ), 
 									(select max(last_update) from {{ this }}),
-									'1900-01-01')
+									{{ var('init_date') }})
 {% endif %}
