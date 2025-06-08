@@ -27,6 +27,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 on-run-start: 
+  - create schema if not exists sakila_dwh;
   - create table if not exists sakila_dwh.log_table (id varchar(50), start_at timestamptz, end_at timestamp);
   - insert into sakila_dwh.log_table (id, start_at) values ('{{invocation_id}}', now());
 
