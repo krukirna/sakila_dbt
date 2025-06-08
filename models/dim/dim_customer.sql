@@ -18,7 +18,7 @@ select  ci.city as city,
 		c.first_name || ' ' || c.last_name as full_name,
 		right(c.email, length(c.email) - position('@' in c.email)) as domain,
 		case when c.activebool then 'yes' else 'no' end as active_desc,
-		c.*,
+		c.* except (activebool),
 		'{{ run_started_at }}'::timestamp AT TIME ZONE 'UTC' as etl_time,
 		'{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S") }}' as etl_time_str
 from {{ source('stg','customer') }} as c
