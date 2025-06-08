@@ -1,6 +1,6 @@
 {{
   config(
-    pre_hook = "delete from {{this}}"
+    unique_key = 'date_dim_id'
     )
 }}
 
