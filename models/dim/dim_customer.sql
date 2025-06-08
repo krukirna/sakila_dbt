@@ -4,7 +4,8 @@
 		post_hook = "update {{source('stg', 'z_refresh_from')}} set to_refresh = 0 where table_name = '{{ this }}'",
 		indexes=[
 			{'columns': ['create_date']}
-			]
+			],
+		identifier = 'ua_2025'
 		)
 }}
 
@@ -17,7 +18,9 @@ select  ci.city as city,
 		c.first_name || ' ' || c.last_name as full_name,
 		right(c.email, length(c.email) - position('@' in c.email)) as domain,
 		case when c.activebool then 'yes' else 'no' end as active_desc,
-		c.*
+		c.*,
+		'{{ run_started_at }}'::timestamp AT TIME ZONE 'UTC' as etl_time,
+		'{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S") }}' as etl_time_str
 from {{ source('stg','customer') }} as c
 left join {{ source('stg','address') }} as a on a.address_id = c.address_id 
 left join {{ source('stg','city') }} as ci on ci.city_id = a.city_id 

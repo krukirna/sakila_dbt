@@ -47,9 +47,10 @@ models:
       +materialized: incremental
       +schema: dim
       +pre_hook: "{{delete_from(this)}}"
+        
     fact: 
       +materialized: incremental
       +schema: fact
 
 seeds:
-  +schema: seed
+  +schema: seeds
