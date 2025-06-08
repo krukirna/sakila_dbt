@@ -36,9 +36,11 @@ models:
     example:
       +materialized: view
       +schema: example
+      +enabled: false
     dim: 
       +materialized: incremental
       +schema: dim
+      +pre_hook: "{{delete_from(this)}}"
     fact: 
       +materialized: incremental
       +schema: fact
