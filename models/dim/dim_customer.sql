@@ -18,7 +18,15 @@ select  ci.city as city,
 		c.first_name || ' ' || c.last_name as full_name,
 		right(c.email, length(c.email) - position('@' in c.email)) as domain,
 		case when c.activebool then 'yes' else 'no' end as active_desc,
-		c.* except (activebool),
+		c.customer_id,
+		c.store_id,
+		c.first_name,
+		c.last_name,
+		c.email,
+		c.address_id,
+		c.create_date,
+		c.last_update,
+		c.active,
 		'{{ run_started_at }}'::timestamp AT TIME ZONE 'UTC' as etl_time,
 		'{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S") }}' as etl_time_str
 from {{ source('stg','customer') }} as c
@@ -27,8 +35,8 @@ left join {{ source('stg','city') }} as ci on ci.city_id = a.city_id
 
 
 {% if is_incremental() %}
-	where c.last_update >= coalesce(
-									(select from_date from refresh_date ), 
-									(select max(last_update) from {{ this }}),
-									{{ var('init_date') }})
+	--where c.last_update >= coalesce(
+	--								(select from_date from refresh_date ), 
+	--								(select max(last_update) from {{ this }}),
+	--								{{ var('init_date') }})
 {% endif %}
